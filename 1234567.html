@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ôn Luyện KET Listening - Chia Theo Part</title>
+  <style>
+    :root {
+      --primary: #1d4ed8;
+      --primary-soft: #eff6ff;
+      --secondary: #0f172a;
+      --accent: #2563eb;
+      --bg: #f8fafc;
+      --card: #ffffff;
+      --border: #e2e8f0;
+      --text: #1e293b;
+      --correct: #15803d;
+      --correct-bg: #dcfce7;
+      --wrong: #b91c1c;
+      --wrong-bg: #fee2e2;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+    body { background-color: var(--bg); color: var(--text); padding: 20px 12px; line-height: 1.5; }
+    .container { max-width: 900px; margin: 0 auto; }
+
+    header { text-align: center; margin-bottom: 25px; }
+    header h1 { font-size: 1.75rem; color: var(--primary); margin-bottom: 6px; }
+    header p { color: #64748b; font-size: 0.95rem; }
+
+    /* Part Navigation Tabs */
+    .part-tabs {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    .part-btn {
+      background: #e2e8f0;
+      color: #334155;
+      border: none;
+      padding: 12px 14px;
+      border-radius: 10px;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-align: center;
+    }
+    .part-btn:hover { background: #cbd5e1; }
+    .part-btn.active {
+      background: var(--primary);
+      color: #ffffff;
+      box-shadow: 0 4px 10px rgba(29, 78, 216, 0.25);
+    }
+
+    /* Sub-tabs (Packages) */
+    .sub-bar {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px 16px;
+      margin-bottom: 20px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
+    }
+    .sub-bar-title { font-size: 0.9rem; font-weight: 600; color: #64748b; margin-right: 6px; }
+    .pkg-btn {
+      background: #f1f5f9;
+      border: 1px solid #cbd5e1;
+      color: #475569;
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    .pkg-btn:hover { background: #e2e8f0; }
+    .pkg-btn.active {
+      background: #3b82f6;
+      border-color: #3b82f6;
+      color: #ffffff;
+    }
+
+    /* Question Card */
+    .quiz-card {
+      background: var(--card);
+      border-radius: 12px;
+      padding: 24px;
+      border: 1px solid var(--border);
+      box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+      margin-bottom: 25px;
+    }
+    .quiz-header {
+      border-bottom: 2px solid #f1f5f9;
+      padding-bottom: 12px;
+      margin-bottom: 18px;
+    }
+    .quiz-header h2 { font-size: 1.3rem; color: #0f172a; margin-bottom: 4px; }
+    .quiz-header p { font-size: 0.9rem; color: #64748b; font-style: italic; }
+
+    .q-item {
+      padding: 14px 0;
+      border-bottom: 1px dashed var(--border);
+    }
+    .q-item:last-child { border-bottom: none; }
+    .q-title { font-weight: 600; margin-bottom: 8px; font-size: 1rem; }
+
+    /* Choices */
+    .options { display: flex; flex-direction: column; gap: 8px; margin-left: 8px; }
+    .tf-options { display: flex; gap: 24px; margin-left: 8px; }
+    .opt-label { display: flex; align-items: center; gap: 8px; cursor: pointer; font-size: 0.95rem; }
+    .opt-label input { cursor: pointer; accent-color: var(--primary); width: 17px; height: 17px; }
+
+    /* Fill Form Style */
+    .fill-box {
+      background: var(--primary-soft);
+      border-left: 4px solid var(--primary);
+      border-radius: 8px;
+      padding: 16px;
+      margin-top: 10px;
+    }
+    .fill-box h3 { font-size: 1.05rem; color: var(--primary); margin-bottom: 10px; text-transform: uppercase; }
+    .fill-meta { color: #475569; font-weight: 600; font-size: 0.9rem; margin-bottom: 12px; }
+    .fill-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 10px;
+      font-size: 0.95rem;
+    }
+    .fill-input {
+      padding: 7px 12px;
+      border: 1.5px solid #cbd5e1;
+      border-radius: 6px;
+      font-size: 0.95rem;
+      outline: none;
+      min-width: 170px;
+      background: #ffffff;
+      transition: 0.2s;
+    }
+    .fill-input:focus { border-color: var(--primary); }
+
+    /* Feedback badges */
+    .feedback { margin-left: 10px; font-size: 0.85rem; font-weight: 600; }
+    .badge-correct { color: var(--correct); background: var(--correct-bg); padding: 3px 8px; border-radius: 4px; }
+    .badge-wrong { color: var(--wrong); background: var(--wrong-bg); padding: 3px 8px; border-radius: 4px; }
+
+    /* Action buttons */
+    .actions { display: flex; justify-content: center; gap: 14px; margin: 25px 0; }
+    .btn {
+      padding: 12px 24px;
+      font-size: 1rem;
+      font-weight: 700;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    .btn-submit { background: var(--primary); color: #fff; }
+    .btn-submit:hover { background: #1e40af; }
+    .btn-reset { background: #64748b; color: #fff; }
+    .btn-reset:hover { background: #475569; }
+
+    /* Score banner */
+    .score-banner {
+      display: none;
+      background: #eff6ff;
+      border: 2px solid #bfdbfe;
+      color: #1e3a8a;
+      padding: 14px;
+      border-radius: 8px;
+      text-align: center;
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin-bottom: 20px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <header>
+    <h1>LUYỆN THI LISTENING THEO TỪNG PART</h1>
+    <p>Chọn Part kỹ năng cần luyện &rarr; Chọn đề thi (Package) &rarr; Làm và chấm bài</p>
+  </header>
+
+  <!-- Part Navigation -->
+  <div class="part-tabs">
+    <button class="part-btn active" onclick="selectPart(1)">Part 1: Tranh / Ngắn</button>
+    <button class="part-btn" onclick="selectPart(2)">Part 2: True / False</button>
+    <button class="part-btn" onclick="selectPart(3)">Part 3: Trắc nghiệm A-B-C</button>
+    <button class="part-btn" onclick="selectPart(4)">Part 4: Điền biểu mẫu</button>
+  </div>
+
+  <!-- Sub-tabs for Packages -->
+  <div class="sub-bar" id="packageBar">
+    <span class="sub-bar-title">Chọn Đề:</span>
+    <div id="pkgButtonList" style="display:flex; flex-wrap:wrap; gap:8px;"></div>
+  </div>
+
+  <div id="scoreBanner" class="score-banner"></div>
+  <div id="quizContainer"></div>
+
+  <div class="actions">
+    <button class="btn btn-submit" onclick="gradeCurrentTest()">Nộp bài & Chấm điểm</button>
+    <button class="btn btn-reset" onclick="resetCurrentTest()">Làm lại đề này</button>
+  </div>
+</div>
+
+<script>
+// DỮ LIỆU ĐẦY ĐỦ CỦA TỪNG PART THEO CÁC GÓI ĐỀ THI
+const db = {
+  part1: {
+    name: "Part 1 (Questions 1 - 5)",
+    desc: "Listen to five short conversations. Choose the correct picture/option (A, B, or C).",
+    packages: {
+      1: [
+        { q: "1. What music will they have at the party?", opts: ["A. Guitar", "B. Piano", "C. CDs / Stereo"], ans: "C" },
+        { q: "2. When will the man go on holiday?", opts: ["A. June", "B. July", "C. August"], ans: "B" },
+        { q: "3. What will the weather be like tomorrow?", opts: ["A. Sunny", "B. Windy / Blown trees", "C. Rainy"], ans: "B" },
+        { q: "4. What colour is Mary's coat?", opts: ["A. Yellow", "B. Blue", "C. Brown"], ans: "A" },
+        { q: "5. What did the woman repair?", opts: ["A. Office chair", "B. Desk shelf / edge", "C. Office desk"], ans: "B" }
+      ],
+      2: [
+        { q: "1. What are they going to buy for Pam?", opts: ["A. A book", "B. A plant / potted flower", "C. A box of chocolates"], ans: "B" },
+        { q: "2. When is the man's appointment?", opts: ["A. Wednesday", "B. Thursday", "C. Friday"], ans: "B" },
+        { q: "3. Which is the aunt's postcard?", opts: ["A. Mountain view with empty road", "B. Mountains with small houses", "C. Dense pine forest by the lake"], ans: "C" },
+        { q: "4. What time will the plane to Milan leave?", opts: ["A. 01:00", "B. 07:15", "C. 08:15"], ans: "C" },
+        { q: "5. What does Joe's father do?", opts: ["A. Farmer (driving tractor)", "B. Photographer", "C. Pilot in cockpit"], ans: "A" }
+      ],
+      3: [
+        { q: "1. What’s George doing now?", opts: ["A. Working at desk with clock", "B. Outdoor activity", "C. Travelling in a car"], ans: "C" },
+        { q: "2. Which room will the woman stay in?", opts: ["A. Room 6", "B. Room 23", "C. Room 43"], ans: "B" },
+        { q: "3. What will the boy wear in the race?", opts: ["A. T-shirt and shorts", "B. Vest and cap", "C. Full tracksuit (long trousers)"], ans: "C" },
+        { q: "4. What colour will the room be?", opts: ["A. Yellow", "B. Green", "C. Orange"], ans: "A" },
+        { q: "5. Where did Minnie and Richard meet?", opts: ["A. Classroom", "B. Playing tennis", "C. In front of mirror in corridor"], ans: "C" }
+      ],
+      4: [
+        { q: "1. How much is the car?", opts: ["A. £1000", "B. £2000", "C. £3000"], ans: "C" },
+        { q: "2. What’s Elena going to take to the party?", opts: ["A. Pizza & Coca Cola", "B. Chocolate bars & Coca Cola", "C. Biscuits & Orange juice"], ans: "A" },
+        { q: "3. Where will Susan buy her eggs?", opts: ["A. Eco Food shop", "B. Chicken Farm", "C. Supermarket shelves"], ans: "B" },
+        { q: "4. What time does the film begin?", opts: ["A. 2:10", "B. 2:30", "C. 2:45"], ans: "C" },
+        { q: "5. How will the man travel to London?", opts: ["A. By Bus", "B. By Train", "C. By Car"], ans: "A" }
+      ],
+      5: [
+        { q: "1. How will Jill go to the football match?", opts: ["A. Walking with a friend", "B. Taking bus / train", "C. Riding in car"], ans: "A" },
+        { q: "2. Who’s going to visit the woman?", opts: ["A. A small baby", "B. A young boy", "C. An elderly man"], ans: "C" },
+        { q: "3. What will Ruby do tonight?", opts: ["A. Iron clothes", "B. Do homework / study", "C. Go to the cinema with friend"], ans: "C" },
+        { q: "4. How much did the woman’s desk cost?", opts: ["A. £66.50", "B. £60.50", "C. £55.00"], ans: "A" },
+        { q: "5. Where’s the man’s watch?", opts: ["A. Beside the bed", "B. On edge of bathroom sink", "C. In kitchen washbasin"], ans: "B" }
+      ]
+    }
+  },
+
+  part2: {
+    name: "Part 2 (Questions 6 - 10)",
+    desc: "Listen to five short conversations. Mark the sentences True (T) or False (F).",
+    packages: {
+      1: [
+        { q: "6. Anna isn’t sure if she wants to go to the party.", ans: "T" },
+        { q: "7. The concert was very good.", ans: "F" },
+        { q: "8. Claudia is never late for class.", ans: "F" },
+        { q: "9. The woman speaks Spanish very well.", ans: "T" },
+        { q: "10. Henry kicked the ball over the top of the goal.", ans: "T" }
+      ],
+      2: [
+        { q: "6. The man and woman decide to walk.", ans: "F" },
+        { q: "7. The woman wouldn’t like to meet Deborah.", ans: "F" },
+        { q: "8. The woman is afraid of mice.", ans: "T" },
+        { q: "9. The man decides to go to the cafe.", ans: "T" },
+        { q: "10. The woman thinks he should buy a hamster.", ans: "F" }
+      ],
+      3: [
+        { q: "6. Matt has lived in Chicago for a year.", ans: "T" },
+        { q: "7. John’s sister is married.", ans: "F" },
+        { q: "8. He started running a few years ago.", ans: "T" },
+        { q: "9. Her favorite subject is Math.", ans: "F" },
+        { q: "10. Lincoln Memorial was completed in 1922.", ans: "T" }
+      ],
+      4: [
+        { q: "6. The woman went to the beach on the weekend.", ans: "F" },
+        { q: "7. The man doesn't eat enough fish.", ans: "T" },
+        { q: "8. The woman goes to the gym every day.", ans: "F" },
+        { q: "9. The woman gets up at 7:00.", ans: "F" },
+        { q: "10. Both men used to be married.", ans: "T" }
+      ],
+      5: [
+        { q: "6. Allie is feeling worse.", ans: "F" },
+        { q: "7. Mark thinks Allie might get cold.", ans: "T" },
+        { q: "8. They are going to get a taxi to the bay.", ans: "T" },
+        { q: "9. Allie wants to be at the hotel again at 1:00 p.m.", ans: "T" },
+        { q: "10. She’s expecting an important visitor.", ans: "F" }
+      ]
+    }
+  },
+
+  part3: {
+    name: "Part 3 (Questions 11 - 15)",
+    desc: "Listen to the conversation. Choose the best answer (A, B, or C).",
+    packages: {
+      1: {
+        topic: "Sue talking to her friend, Jim, about the new sport centre",
+        items: [
+          { q: "11. Which bus goes to the sports centre?", opts: ["A. 15", "B. 18", "C. 25"], ans: "B" },
+          { q: "12. From Monday to Saturday, the sports centre is open from ___", opts: ["A. 6 a.m.", "B. 7 a.m.", "C. 9 a.m."], ans: "A" },
+          { q: "13. If Sue goes swimming, she must take ___", opts: ["A. soap.", "B. a swimming hat.", "C. a towel"], ans: "C" },
+          { q: "14. At the sport centre, you can buy ___", opts: ["A. sandwiches.", "B. fruit.", "C. drinks."], ans: "A" },
+          { q: "15. Jim and Sue are going to the sports centre next ___", opts: ["A. Wednesday.", "B. Thursday.", "C. Saturday."], ans: "B" }
+        ]
+      },
+      2: {
+        topic: "Anne asking her friend about going to a shopping centre",
+        items: [
+          { q: "11. At the moment, the shopping centre sells ___.", opts: ["A. clothes", "B. books", "C. food"], ans: "A" },
+          { q: "12. You can take a coach to the shopping centre on ___.", opts: ["A. Mondays.", "B. Tuesdays.", "C. Saturdays."], ans: "B" },
+          { q: "13. Anne’s coach ticket will cost ___.", opts: ["A. £ 2.50.", "B. £ 5.60.", "C. £ 10.80."], ans: "B" },
+          { q: "14. The nearest coach stop to Anne’s house is ___.", opts: ["A. in the bus station", "B. in the market square", "C. outside the museum"], ans: "C" },
+          { q: "15. The coach journey takes ___.", opts: ["A. 10 minutes", "B. 20 minutes", "C. 40 minutes"], ans: "C" }
+        ]
+      },
+      3: {
+        topic: "Diane talking to a friend about a trip to London",
+        items: [
+          { q: "11. Diane went to London by ___.", opts: ["A. car", "B. bus", "C. underground"], ans: "B" },
+          { q: "12. Diane and her friends ate___.", opts: ["A. Mexican food", "B. Chinese food", "C. Spanish food"], ans: "B" },
+          { q: "13. Diane says the restaurant was___.", opts: ["A. full", "B. expensive", "C. quiet"], ans: "A" },
+          { q: "14. After the meal, Diane and her friends___.", opts: ["A. sat and talked", "B. saw a film", "C. walked by the water"], ans: "C" },
+          { q: "15. During Diane’s trip to London,___.", opts: ["A. it rained", "B. it snowed", "C. it was windy"], ans: "C" }
+        ]
+      },
+      4: {
+        topic: "Philip talking to a friend about his photography course",
+        items: [
+          { q: "11. What time do the photography classes begin?", opts: ["A. 5.15 p.m.", "B. 6.00 p.m.", "C. 6.45 p.m."], ans: "C" },
+          { q: "12. How much does Philip pay for the photography course?", opts: ["A. £ 55", "B. £ 75", "C. £ 95"], ans: "B" },
+          { q: "13. Philip’s happy with the course because he’s ___.", opts: ["A. learning about famous photographers.", "B. using a new camera.", "C. getting better at photography"], ans: "C" },
+          { q: "14. Philip thinks it’s easy to take photographs of ___.", opts: ["A. trees", "B. animals", "C. children"], ans: "A" },
+          { q: "15. After the course, Philip will ___.", opts: ["A. buy a new camera", "B. get a job in photography", "C. make photography his hobby"], ans: "C" }
+        ]
+      },
+      5: {
+        topic: "Helen talking to her friend, Sam, about being in a rock band",
+        items: [
+          { q: "11. Sam agrees to play the guitar on ___.", opts: ["A. Wednesday", "B. Thursday", "C. Friday"], ans: "B" },
+          { q: "12. Where does Nick’s band practice?", opts: ["A. in a garage", "B. at Helen’s flat", "C. in Nick’s bedroom"], ans: "A" },
+          { q: "13. Sam should bring___.", opts: ["A. Sandwiches", "B. CDs", "C. a sweater"], ans: "C" },
+          { q: "14. The band will next play at___.", opts: ["A. a party", "B. a club", "C. a college"], ans: "C" },
+          { q: "15. How much does Helen earn, per night, in the band", opts: ["A. £ 10", "B. £ 25", "C. £ 110"], ans: "B" }
+        ]
+      },
+      6: {
+        topic: "Jamie talking to his mother about a flat",
+        items: [
+          { q: "11. Jamie will go to university from the new flat___.", opts: ["A. by bicycle", "B. by bus", "C. on foot"], ans: "C" },
+          { q: "12. The new flat is___.", opts: ["A. over a shop", "B. on a noisy road", "C. next to a café"], ans: "A" },
+          { q: "13. How much will Jamie pay a week for the flat?", opts: ["A. £ 200", "B. £ 40", "C. £ 14"], ans: "B" },
+          { q: "14. What does the flat have?", opts: ["A. a cooker", "B. a fridge", "C. a washing machine"], ans: "C" },
+          { q: "15. Jamie agrees to move into the new flat on___.", opts: ["A. Saturday", "B. Sunday", "C. Monday"], ans: "B" }
+        ]
+      },
+      7: {
+        topic: "Zak talking to Maria about his sports bag",
+        items: [
+          { q: "11. The bag is ___.", opts: ["A. small", "B. old", "C. dirty"], ans: "C" },
+          { q: "12. Where is the bag?", opts: ["A. in the classroom", "B. on the sports field", "C. at the hospital"], ans: "A" },
+          { q: "13. What is inside the bag?", opts: ["A. money", "B. a watch", "C. clothes"], ans: "C" },
+          { q: "14. Maria should take the bag to Zak ___.", opts: ["A. this afternoon", "B. this evening", "C. tomorrow morning"], ans: "B" },
+          { q: "15. Zak hurt himself when he was ___.", opts: ["A. playing football", "B. running", "C. changing his clothes"], ans: "B" }
+        ]
+      },
+      8: {
+        topic: "Jim talking to Sarah about things to take on holiday",
+        items: [
+          { q: "11. Where did Jim buy his walking shoes?", opts: ["A. at the market", "B. in a supermarket", "C. in a shoe shop"], ans: "A" },
+          { q: "12. The shoes cost Jim___.", opts: ["A. £ 20", "B. £ 48", "C. £ 68"], ans: "B" },
+          { q: "13. Jim says Sarah should take___.", opts: ["A. a jacket", "B. a sweater", "C. a sun hat"], ans: "C" },
+          { q: "14. How many T-shirts should Sarah take?", opts: ["A. one", "B. five", "C. seven"], ans: "B" },
+          { q: "15. Sarah should take her phone because she may want to ___.", opts: ["A. phone the hotel", "B. phone home", "C. phone for help"], ans: "C" }
+        ]
+      }
+    }
+  },
+
+  part4: {
+    name: "Part 4 (Questions 16 - 20 / Điền từ)",
+    desc: "Listen and fill in the missing information. Write ONE WORD or A NUMBER.",
+    packages: {
+      1: {
+        title: "MESSAGE",
+        info: "To: Diana | From: Ian",
+        fields: [
+          { id: "f1", label: "Name of hotel:", ans: ["april", "the april", "april hotel", "the april hotel"] },
+          { id: "f2", label: "Address:", suffix: "street.", ans: ["leith"] },
+          { id: "f3", label: "Meeting starts at:", ans: ["10.20", "10:20", "ten twenty", "twenty past ten"] },
+          { id: "f4", label: "Bring:", ans: ["book", "a book"] },
+          { id: "f5", label: "Visit factory:", ans: ["tuesday"] }
+        ]
+      },
+      2: {
+        title: "JOHN LOCKE TRAVEL",
+        info: "Travel to: New York",
+        fields: [
+          { id: "f1", label: "Name:", ans: ["brierley"] },
+          { id: "f2", label: "Will leave on:", suffix: "December", ans: ["9", "9th", "ninth", "9th of"] },
+          { id: "f3", label: "Will return on: 30th", ans: ["march"] },
+          { id: "f4", label: "Price: £", ans: ["365", "three hundred and sixty-five", "three hundred and sixty five"] },
+          { id: "f5", label: "Travel to airport by:", ans: ["train"] }
+        ]
+      },
+      3: {
+        title: "VIDEO",
+        info: "Actor in film: Brad Smith",
+        fields: [
+          { id: "f1", label: "Name of film: Blue", ans: ["cafe", "café"] },
+          { id: "f2", label: "For people:", suffix: "years old or more.", ans: ["12", "twelve"] },
+          { id: "f3", label: "Cost: £", ans: ["5.99"] },
+          { id: "f4", label: "Video shop in:", suffix: "street.", ans: ["shirley"] },
+          { id: "f5", label: "Opposite:", ans: ["the bank", "bank"] }
+        ]
+      },
+      4: {
+        title: "Westwood English School",
+        info: "Evening classes on: Thursday",
+        fields: [
+          { id: "f1", label: "Next course starts on: 22", ans: ["september"] },
+          { id: "f2", label: "Speaking class with: Miss", ans: ["jarvis"] },
+          { id: "f3", label: "Cost for 12 classes: £", ans: ["78"] },
+          { id: "f4", label: "Address:", suffix: "Fitzroy Square", ans: ["223"] },
+          { id: "f5", label: "School is next to the:", ans: ["bookshop", "book shop"] }
+        ]
+      },
+      5: {
+        title: "Party for old school friends",
+        info: "For pupils from: Romford School",
+        fields: [
+          { id: "f1", label: "Date of party:", suffix: "September", ans: ["7", "7th", "seventh"] },
+          { id: "f2", label: "Day of party:", ans: ["saturday"] },
+          { id: "f3", label: "Margaret’s new surname:", ans: ["jaggard"] },
+          { id: "f4", label: "Margaret’s address:", suffix: "Park Road", ans: ["11"] },
+          { id: "f5", label: "Bring:", ans: ["photos", "photograph", "photographs", "photo"] }
+        ]
+      },
+      6: {
+        title: "Theatre tickets",
+        info: "Name of the theatre: QUEEN’S",
+        fields: [
+          { id: "f1", label: "There are tickets for show on:", suffix: "evening", ans: ["wednesday"] },
+          { id: "f2", label: "Price for one ticket: £", ans: ["8.50", "8.5"] },
+          { id: "f3", label: "Get tickets from ticket office in:", suffix: "Road", ans: ["ferret"] },
+          { id: "f4", label: "Show starts at:", suffix: "p.m", ans: ["7.45", "19.45", "7:45"] },
+          { id: "f5", label: "Bus number:", ans: ["136"] }
+        ]
+      },
+      7: {
+        title: "Swimming pool",
+        info: "Closing day: Monday",
+        fields: [
+          { id: "f1", label: "The “early morning swim” starts at:", suffix: "a.m.", ans: ["6.00", "6", "six", "6:00", "six o'clock", "6 o'clock"] },
+          { id: "f2", label: "9.30-12.30, pool is used by:", ans: ["school children", "schools", "school", "students", "the schools", "children"] },
+          { id: "f3", label: "Each lesson costs: £", ans: ["7.50", "7.5", "seven pounds fifty", "seven pounds and fifty pence"] },
+          { id: "f4", label: "Date of next course:", ans: ["9 march", "9th march", "9th of march", "9.3", "march 9"] },
+          { id: "f5", label: "Teacher’s name: Roy", ans: ["fowler"] }
+        ]
+      },
+      8: {
+        title: "Homework",
+        info: "Subject: Biology",
+        fields: [
+          { id: "f1", label: "Name of book:", ans: ["river", "rivers", "the river", "the rivers"] },
+          { id: "f2", label: "Written by: Martin", ans: ["cooper"] },
+          { id: "f3", label: "Read: pages", ans: ["123-127", "123 - 127", "123 to 127"] },
+          { id: "f4", label: "Learn about:", ans: ["fish"] },
+          { id: "f5", label: "Finish by:", ans: ["friday"] }
+        ]
+      }
+    }
+  }
+};
+
+let currentPart = 1;
+let currentPkg = 1;
+
+function selectPart(partNum) {
+  currentPart = partNum;
+  currentPkg = 1; // reset về đề 1 của part đó
+  document.querySelectorAll(".part-btn").forEach((btn, idx) => {
+    btn.classList.toggle("active", idx + 1 === partNum);
+  });
+  renderPackageButtons();
+  renderQuiz();
+}
+
+function selectPackage(pkgNum) {
+  currentPkg = pkgNum;
+  document.querySelectorAll(".pkg-btn").forEach(btn => {
+    btn.classList.toggle("active", parseInt(btn.dataset.pkg) === pkgNum);
+  });
+  renderQuiz();
+}
+
+function renderPackageButtons() {
+  const container = document.getElementById("pkgButtonList");
+  container.innerHTML = "";
+  const partData = db[`part${currentPart}`];
+  const pkgKeys = Object.keys(partData.packages);
+
+  pkgKeys.forEach(k => {
+    const pkgNum = parseInt(k);
+    const btn = document.createElement("button");
+    btn.className = `pkg-btn ${pkgNum === currentPkg ? 'active' : ''}`;
+    btn.dataset.pkg = pkgNum;
+    btn.innerText = `Package ${pkgNum}`;
+    btn.onclick = () => selectPackage(pkgNum);
+    container.appendChild(btn);
+  });
+}
+
+function renderQuiz() {
+  const container = document.getElementById("quizContainer");
+  const banner = document.getElementById("scoreBanner");
+  banner.style.display = "none";
+
+  const partInfo = db[`part${currentPart}`];
+  const pkgContent = partInfo.packages[currentPkg];
+
+  let html = `
+    <div class="quiz-card">
+      <div class="quiz-header">
+        <h2>${partInfo.name} - Package ${currentPkg}</h2>
+        <p>${partInfo.desc}</p>
+      </div>
+  `;
+
+  if (currentPart === 1) {
+    pkgContent.forEach((item, idx) => {
+      html += `
+        <div class="q-item" id="item_${idx}">
+          <div class="q-title">${item.q} <span class="feedback"></span></div>
+          <div class="options">
+            ${item.opts.map(opt => `
+              <label class="opt-label">
+                <input type="radio" name="ans_${idx}" value="${opt[0]}"> ${opt}
+              </label>
+            `).join('')}
+          </div>
+        </div>
+      `;
+    });
+  } else if (currentPart === 2) {
+    pkgContent.forEach((item, idx) => {
+      html += `
+        <div class="q-item" id="item_${idx}">
+          <div class="q-title">${item.q} <span class="feedback"></span></div>
+          <div class="tf-options">
+            <label class="opt-label"><input type="radio" name="ans_${idx}" value="T"> True (T)</label>
+            <label class="opt-label"><input type="radio" name="ans_${idx}" value="F"> False (F)</label>
+          </div>
+        </div>
+      `;
+    });
+  } else if (currentPart === 3) {
+    html += `<p style="font-weight:600; color:#3b82f6; margin-bottom:14px;">🎧 Ngữ cảnh: ${pkgContent.topic}</p>`;
+    pkgContent.items.forEach((item, idx) => {
+      html += `
+        <div class="q-item" id="item_${idx}">
+          <div class="q-title">${item.q} <span class="feedback"></span></div>
+          <div class="options">
+            ${item.opts.map(opt => `
+              <label class="opt-label">
+                <input type="radio" name="ans_${idx}" value="${opt[0]}"> ${opt}
+              </label>
+            `).join('')}
+          </div>
+        </div>
+      `;
+    });
+  } else if (currentPart === 4) {
+    html += `
+      <div class="fill-box">
+        <h3>${pkgContent.title}</h3>
+        ${pkgContent.info ? `<div class="fill-meta">${pkgContent.info}</div>` : ''}
+    `;
+    pkgContent.fields.forEach((field, idx) => {
+      html += `
+        <div class="fill-row" id="item_${idx}">
+          <span>(${16 + idx}) ${field.label}</span>
+          <input type="text" class="fill-input" id="field_${idx}" placeholder="Gõ câu trả lời..." autocomplete="off">
+          ${field.suffix ? `<span>${field.suffix}</span>` : ''}
+          <span class="feedback"></span>
+        </div>
+      `;
+    });
+    html += `</div>`;
+  }
+
+  html += `</div>`;
+  container.innerHTML = html;
+}
+
+function gradeCurrentTest() {
+  const partInfo = db[`part${currentPart}`];
+  const pkgContent = partInfo.packages[currentPkg];
+  let score = 0;
+  let total = 5;
+
+  if (currentPart === 1 || currentPart === 2) {
+    pkgContent.forEach((item, idx) => {
+      const selected = document.querySelector(`input[name="ans_${idx}"]:checked`);
+      const row = document.getElementById(`item_${idx}`);
+      const fb = row.querySelector(".feedback");
+
+      if (selected && selected.value === item.ans) {
+        score++;
+        fb.innerHTML = `<span class="badge-correct">✓ Đúng</span>`;
+      } else {
+        fb.innerHTML = `<span class="badge-wrong">✗ Sai (Đáp án: ${item.ans})</span>`;
+      }
+    });
+  } else if (currentPart === 3) {
+    pkgContent.items.forEach((item, idx) => {
+      const selected = document.querySelector(`input[name="ans_${idx}"]:checked`);
+      const row = document.getElementById(`item_${idx}`);
+      const fb = row.querySelector(".feedback");
+
+      if (selected && selected.value === item.ans) {
+        score++;
+        fb.innerHTML = `<span class="badge-correct">✓ Đúng</span>`;
+      } else {
+        fb.innerHTML = `<span class="badge-wrong">✗ Sai (Đáp án: ${item.ans})</span>`;
+      }
+    });
+  } else if (currentPart === 4) {
+    pkgContent.fields.forEach((field, idx) => {
+      const input = document.getElementById(`field_${idx}`);
+      const row = document.getElementById(`item_${idx}`);
+      const fb = row.querySelector(".feedback");
+      const val = input.value.trim().toLowerCase();
+
+      const isMatch = field.ans.some(a => a.toLowerCase() === val);
+      if (isMatch) {
+        score++;
+        input.style.borderColor = "var(--correct)";
+        fb.innerHTML = `<span class="badge-correct">✓ Đúng</span>`;
+      } else {
+        input.style.borderColor = "var(--wrong)";
+        fb.innerHTML = `<span class="badge-wrong">✗ Sai (Đáp án: ${field.ans[0]})</span>`;
+      }
+    });
+  }
+
+  const banner = document.getElementById("scoreBanner");
+  banner.innerHTML = `Kết quả: ${score} / ${total} câu đúng (${Math.round((score/total)*100)}%)`;
+  banner.style.display = "block";
+  banner.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+function resetCurrentTest() {
+  renderQuiz();
+}
+
+// Khởi chạy
+window.onload = () => {
+  renderPackageButtons();
+  renderQuiz();
+};
+</script>
+</body>
+</html>
